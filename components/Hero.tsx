@@ -60,12 +60,7 @@ export default function Hero() {
           muted
           playsInline
           preload="auto"
-          onEnded={(e) => {
-            const v = e.currentTarget;
-            v.currentTime = 0;
-            void v.play();
-          }}
-          className="h-full w-full object-cover object-[center_top]"
+          className="h-full w-full object-cover object-[center_top] lg:object-contain lg:object-[right_bottom]"
         />
         {/* Light touch: the photo is already a warm noir portrait.
             Mobile dims a bit for legibility; desktop only fades into the copy. */}
