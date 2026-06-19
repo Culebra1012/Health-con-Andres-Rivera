@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-noir text-bone font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-bone;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply font-sans text-xs uppercase tracking-luxe text-gold;
+  }
+
+  .display {
+    @apply font-serif font-light leading-[1.05];
+  }
+
+  .container-luxe {
+    @apply mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-16;
+  }
+
+  /* Warm grid backdrop echoing the Healthcoin slides */
+  .bg-grid {
+    background-image: var(--tw-gradient, none);
+    background-image: linear-gradient(
+        rgba(240, 144, 42, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(240, 144, 42, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Radial amber glow used behind hero / sections */
+  .amber-glow {
+    background: radial-gradient(
+      circle at center,
+      rgba(240, 144, 42, 0.18) 0%,
+      rgba(240, 144, 42, 0) 70%
+    );
+  }
+
+  /* Subtle film-grain overlay for the cinematic feel */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-light via-gold to-ember bg-clip-text text-transparent;
+  }
+}
+
+/* Cursor personalizado (solo punteros finos / desktop) */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 9999px;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 300;
+  mix-blend-mode: difference;
+  transform: translate(-100px, -100px);
+}
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 9999px;
+  border: 1.5px solid #ffffff;
+  pointer-events: none;
+  z-index: 300;
+  mix-blend-mode: difference;
+  transform: translate(-100px, -100px);
+  transition: width 0.25s ease, height 0.25s ease, margin 0.25s ease,
+    background-color 0.25s ease;
+}
+.cursor-ring--active {
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Custom thin scrollbar to match noir-gold aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0907;
+}
+::-webkit-scrollbar-thumb {
+  background: #241e17;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a9762f;
+}
