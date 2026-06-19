@@ -2,6 +2,9 @@
 
 import { motion } from "framer-motion";
 import Reveal from "./Reveal";
+import Tilt from "./Tilt";
+import RevealText from "./RevealText";
+import DnaHelix from "./DnaHelix";
 
 const pillars = [
   {
@@ -46,12 +49,16 @@ export default function Science() {
       className="relative overflow-hidden border-y border-white/5 bg-noir py-28 md:py-40"
     >
       <div className="absolute inset-0 -z-10 bg-grid opacity-60" />
+      {/* Doble hélice de ADN — regeneración celular */}
+      <div className="pointer-events-none absolute right-[5%] top-20 z-0 hidden h-[360px] w-[300px] opacity-90 md:block lg:right-[8%] lg:h-[420px]">
+        <DnaHelix />
+      </div>
 
       <div className="container-luxe">
         <Reveal className="max-w-2xl">
           <span className="eyebrow">El ecosistema clínico</span>
           <h2 className="display mt-5 text-4xl text-bone md:text-5xl">
-            La ciencia del mañana, hoy
+            <RevealText text="La ciencia del mañana, hoy" />
           </h2>
           <p className="mt-6 text-lg font-light leading-relaxed text-bone-muted">
             Cuatro pilares integrados que convierten cada intervención en un
@@ -62,6 +69,7 @@ export default function Science() {
         <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {pillars.map((p, i) => (
             <Reveal key={p.index} delay={i * 0.1}>
+              <Tilt className="h-full">
               <motion.article
                 whileHover={{ y: -8 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -86,6 +94,7 @@ export default function Science() {
                   </p>
                 </div>
               </motion.article>
+              </Tilt>
             </Reveal>
           ))}
         </div>

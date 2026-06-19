@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Reveal from "./Reveal";
+import RevealText from "./RevealText";
 
 /**
  * SECTION 3 — La cronología biológica.
@@ -71,7 +72,7 @@ export default function BeforeAfterSlider() {
         <Reveal className="mx-auto max-w-3xl text-center">
           <span className="eyebrow">La cronología biológica</span>
           <h2 className="display mt-5 text-4xl text-bone md:text-5xl">
-            Resultados que desafían el envejecimiento celular
+            <RevealText text="Resultados que desafían el envejecimiento celular" />
           </h2>
           <p className="mt-6 text-lg font-light leading-relaxed text-bone-muted">
             Desliza para visualizar el cambio: de la pérdida microestructural a

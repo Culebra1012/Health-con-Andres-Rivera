@@ -1,8 +1,19 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Reveal from "./Reveal";
+
+// Puntos de detección biométrica (posición relativa sobre el rostro)
+const SCAN_POINTS = [
+  { top: "26%", left: "37%", label: "Periorbital" },
+  { top: "26%", left: "63%", label: "Periorbital" },
+  { top: "44%", left: "50%", label: "Surco nasogeniano" },
+  { top: "57%", left: "33%", label: "Pómulo" },
+  { top: "57%", left: "67%", label: "Pómulo" },
+  { top: "72%", left: "50%", label: "Línea mandibular" },
+  { top: "16%", left: "50%", label: "Frente" },
+];
 
 /**
  * SECTION — Diagnóstico asistido por IA (demo).
@@ -63,6 +74,20 @@ export default function AIScanner() {
   );
   const [result, setResult] = useState<Resultado | null>(null);
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [progress, setProgress] = useState(0);
+
+  // Progreso "biométrico" mientras escanea (se acerca a 99% sin llegar)
+  useEffect(() => {
+    if (status !== "scanning") {
+      setProgress(0);
+      return;
+    }
+    setProgress(0);
+    const id = setInterval(() => {
+      setProgress((p) => (p < 99 ? p + Math.max(1, Math.round((99 - p) * 0.06)) : 99));
+    }, 90);
+    return () => clearInterval(id);
+  }, [status]);
 
   const analyze = useCallback(async (file: File) => {
     try {
@@ -153,34 +178,98 @@ export default function AIScanner() {
                 </button>
               )}
 
-              {/* Línea de escaneo */}
+              {/* ====== Escaneo — diagnóstico premium, sobrio ====== */}
               <AnimatePresence>
                 {status === "scanning" && (
-                  <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="pointer-events-none absolute inset-0"
+                  >
+                    {/* Velado tenue para enfocar el escaneo */}
+                    <div className="absolute inset-0 bg-noir/20" />
+
+                    {/* Barrido de luz suave y lento, con línea fina difuminada */}
                     <motion.div
-                      initial={{ top: "0%" }}
-                      animate={{ top: ["0%", "100%", "0%"] }}
-                      transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                      className="pointer-events-none absolute left-0 right-0 h-px bg-gold shadow-[0_0_24px_6px_rgba(240,144,42,0.7)]"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gold/5" />
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-gold/40 bg-noir/80 px-4 py-1.5 text-[10px] uppercase tracking-luxe text-gold-light backdrop-blur"
+                      initial={{ top: "-25%" }}
+                      animate={{ top: ["-25%", "100%"] }}
+                      transition={{
+                        duration: 3.4,
+                        repeat: Infinity,
+                        ease: [0.45, 0, 0.55, 1],
+                      }}
+                      className="absolute inset-x-0 h-[32%]"
                     >
-                      Analizando rostro…
+                      <div className="h-full w-full bg-gradient-to-b from-transparent via-gold/[0.06] to-gold/[0.14]" />
+                      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gold-light/90 to-transparent shadow-[0_0_14px_2px_rgba(240,144,42,0.35)]" />
                     </motion.div>
-                  </>
+
+                    {/* Enfoque central tipo autofocus: anillos que respiran */}
+                    {[0, 1].map((i) => (
+                      <motion.span
+                        key={i}
+                        animate={{ scale: [0.85, 1.3], opacity: [0.45, 0] }}
+                        transition={{
+                          duration: 2.6,
+                          repeat: Infinity,
+                          ease: "easeOut",
+                          delay: i * 1.3,
+                        }}
+                        className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/40"
+                      />
+                    ))}
+
+                    {/* Puntos de detección: discretos, sin etiquetas, bloom suave */}
+                    {SCAN_POINTS.map((p, i) => (
+                      <motion.span
+                        key={i}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: [0, 0.9, 0.45], scale: 1 }}
+                        transition={{
+                          delay: 0.7 + i * 0.16,
+                          duration: 0.9,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          repeatDelay: 1.8,
+                          ease: "easeInOut",
+                        }}
+                        className="absolute h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-light shadow-[0_0_8px_2px_rgba(245,205,134,0.5)]"
+                        style={{ top: p.top, left: p.left }}
+                      />
+                    ))}
+
+                    {/* Lectura inferior minimalista y centrada */}
+                    <div className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-2.5">
+                      <span className="text-[10px] uppercase tracking-luxe text-gold-light/90">
+                        Analizando · {progress}%
+                      </span>
+                      <div className="h-px w-40 overflow-hidden bg-white/10">
+                        <div
+                          className="h-full bg-gradient-to-r from-transparent via-gold to-transparent transition-all duration-150"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* Marco de targeting */}
-              <div className="pointer-events-none absolute inset-5 rounded-sm border border-gold/20" />
-              <Corner className="left-3 top-3" />
-              <Corner className="right-3 top-3 rotate-90" />
-              <Corner className="bottom-3 right-3 rotate-180" />
-              <Corner className="bottom-3 left-3 -rotate-90" />
+              {/* Marco de targeting (resplandor suave durante el escaneo) */}
+              <motion.div
+                animate={
+                  status === "scanning"
+                    ? { borderColor: "rgba(240,144,42,0.4)" }
+                    : { borderColor: "rgba(224,166,78,0.2)" }
+                }
+                transition={{ duration: 0.5 }}
+                className="pointer-events-none absolute inset-5 rounded-sm border"
+              />
+              <Corner className="left-3 top-3" scanning={status === "scanning"} />
+              <Corner className="right-3 top-3 rotate-90" scanning={status === "scanning"} />
+              <Corner className="bottom-3 right-3 rotate-180" scanning={status === "scanning"} />
+              <Corner className="bottom-3 left-3 -rotate-90" scanning={status === "scanning"} />
             </div>
 
             <input
@@ -317,10 +406,24 @@ function ScanIcon() {
   );
 }
 
-function Corner({ className = "" }: { className?: string }) {
+function Corner({
+  className = "",
+  scanning = false,
+}: {
+  className?: string;
+  scanning?: boolean;
+}) {
   return (
-    <span
-      className={`pointer-events-none absolute h-4 w-4 border-l border-t border-gold/60 ${className}`}
+    <motion.span
+      animate={
+        scanning ? { opacity: [0.45, 0.9, 0.45] } : { opacity: 0.55 }
+      }
+      transition={
+        scanning
+          ? { duration: 2.2, repeat: Infinity, ease: "easeInOut" }
+          : { duration: 0.3 }
+      }
+      className={`pointer-events-none absolute h-4 w-4 border-l border-t border-gold/70 ${className}`}
     />
   );
 }

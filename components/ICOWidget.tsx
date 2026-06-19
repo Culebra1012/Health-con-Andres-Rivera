@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Reveal from "./Reveal";
+import Constellation from "./Constellation";
 
 // El coin 3D solo en cliente (usa WebGL / window)
 const TokenCoin3D = dynamic(() => import("./TokenCoin3D"), {
@@ -35,6 +36,10 @@ export default function ICOWidget() {
     >
       <div className="absolute inset-0 -z-10 bg-grid opacity-60" />
       <div className="absolute left-1/2 top-1/3 -z-10 h-[80vh] w-[70vw] -translate-x-1/2 amber-glow animate-glow" />
+      {/* Red de nodos "blockchain" interactiva */}
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
+        <Constellation />
+      </div>
 
       <div className="container-luxe">
         <Reveal className="mx-auto max-w-3xl text-center">

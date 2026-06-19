@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import MagneticButton from "./MagneticButton";
 import Counter from "./Counter";
+import Aurora from "./Aurora";
 
 const stats = [
   {
@@ -20,9 +20,10 @@ const stats = [
  * Editorial hero: a single real portrait of Dr. Rivera blended into the
  * warm obsidian grid, with amber glow and the core authority signals.
  *
- * Place the real photo at /public/dr-rivera-hero.jpg (vertical 2:3, ≥1600×2400).
+ * Video del Dr. en /public/dr-rivera-hero.MP4 (con la foto como poster).
  */
-const HERO_PORTRAIT = "/dr-rivera-hero.jpg";
+const HERO_VIDEO = "/dr-rivera-hero.MP4";
+const HERO_POSTER = "/dr-rivera-hero.jpg";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -44,19 +45,27 @@ export default function Hero() {
       {/* Warm grid + amber glow backdrop */}
       <div className="absolute inset-0 z-0 bg-grid" />
       <div className="absolute -right-1/4 top-0 z-0 h-[120vh] w-[80vw] amber-glow animate-glow" />
+      <Aurora />
 
-      {/* Portrait — single real photo. Full-bleed on mobile, right 55% on desktop. */}
+      {/* Portrait — video del Dr. Full-bleed en móvil, derecha 55% en desktop. */}
       <motion.div
         style={{ y: portraitY }}
         className="absolute inset-0 z-0 lg:inset-y-0 lg:left-auto lg:right-0 lg:w-[55%]"
       >
-        <Image
-          src={HERO_PORTRAIT}
-          alt="Dr. Andrés Rivera, cirujano plástico y reconstructivo"
-          fill
-          priority
-          sizes="(max-width: 1024px) 100vw, 55vw"
-          className="object-cover object-[center_top]"
+        <video
+          src={HERO_VIDEO}
+          poster={HERO_POSTER}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          onEnded={(e) => {
+            const v = e.currentTarget;
+            v.currentTime = 0;
+            void v.play();
+          }}
+          className="h-full w-full object-cover object-[center_top]"
         />
         {/* Light touch: the photo is already a warm noir portrait.
             Mobile dims a bit for legibility; desktop only fades into the copy. */}
