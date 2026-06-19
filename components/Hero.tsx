@@ -103,7 +103,7 @@ export default function Hero() {
           En la intersección de la medicina regenerativa avanzada y la alta
           costura quirúrgica, el{" "}
           <span className="text-bone">Dr. Andrés Rivera</span> redefine los
-          límites del rejuvenecimiento facial en Healthcoin Palmas, Medellín.
+          límites del rejuvenecimiento facial en Palmas Campestre IPS, Medellín.
         </motion.p>
 
         <motion.div
