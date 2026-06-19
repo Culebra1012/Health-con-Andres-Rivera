@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import MagneticButton from "./MagneticButton";
 import Counter from "./Counter";
@@ -36,21 +36,32 @@ export default function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-12%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
+  // El parallax/fade solo aplica en desktop; en móvil el layout es apilado.
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   return (
     <section
       id="top"
       ref={ref}
-      className="grain relative flex min-h-screen items-center overflow-hidden"
+      className="grain relative overflow-hidden lg:flex lg:min-h-screen lg:items-center"
     >
       {/* Warm grid + amber glow backdrop */}
       <div className="absolute inset-0 z-0 bg-grid" />
       <div className="absolute -right-1/4 top-0 z-0 h-[120vh] w-[80vw] amber-glow animate-glow" />
       <Aurora />
 
-      {/* Portrait — video del Dr. Full-bleed en móvil, derecha 55% en desktop. */}
+      {/* Retrato — video del Dr.
+          Móvil: bloque superior (~62vh). Desktop: columna derecha 55%. */}
       <motion.div
-        style={{ y: portraitY }}
-        className="absolute inset-0 z-0 lg:inset-y-0 lg:left-auto lg:right-0 lg:w-[55%]"
+        style={isDesktop ? { y: portraitY } : undefined}
+        className="relative z-0 h-[62vh] w-full sm:h-[70vh] lg:absolute lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:w-[55%]"
       >
         <video
           src={HERO_VIDEO}
@@ -59,18 +70,18 @@ export default function Hero() {
           loop
           muted
           playsInline
-          preload="auto"
-          className="h-full w-full object-cover object-[center_top] lg:object-contain lg:object-[right_bottom]"
+          preload="metadata"
+          className="h-full w-full object-cover object-[center_18%] lg:object-contain lg:object-[right_bottom]"
         />
-        {/* Light touch: the photo is already a warm noir portrait.
-            Mobile dims a bit for legibility; desktop only fades into the copy. */}
-        <div className="absolute inset-0 bg-noir/60 lg:bg-transparent lg:bg-gradient-to-r lg:from-noir lg:via-noir/20 lg:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-noir/50 via-transparent to-transparent" />
+        {/* Móvil: oscurece bajo el navbar y funde a noir en la base */}
+        <div className="absolute inset-0 bg-gradient-to-b from-noir/75 via-transparent to-noir lg:hidden" />
+        {/* Desktop: funde hacia el texto a la izquierda */}
+        <div className="absolute inset-0 hidden lg:block lg:bg-gradient-to-r lg:from-noir lg:via-noir/20 lg:to-transparent" />
       </motion.div>
 
       <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
-        className="container-luxe relative z-10 py-32"
+        style={isDesktop ? { y: contentY, opacity: contentOpacity } : undefined}
+        className="container-luxe relative z-10 -mt-20 pb-20 sm:-mt-24 lg:mt-0 lg:py-32"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -147,7 +158,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 1 }}
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 lg:block"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
