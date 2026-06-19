@@ -66,7 +66,7 @@ export default function Navbar() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className={`flex items-center justify-between gap-4 px-3 transition-all duration-500 sm:px-4 ${
               scrolled
-                ? "h-14 border border-gold/15 bg-noir/70 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:h-16"
+                ? "h-14 border border-gold/15 bg-noir/85 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md sm:h-16"
                 : "h-16 border border-transparent bg-transparent sm:h-20"
             }`}
           >

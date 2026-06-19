@@ -10,11 +10,12 @@ import Lenis from "lenis";
  */
 export default function SmoothScroll() {
   useEffect(() => {
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
+    // Solo en escritorio con puntero fino. En táctil, Lenis interfiere con el
+    // scroll nativo y se siente "pegajoso".
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touch = window.matchMedia("(pointer: coarse)").matches;
+    const small = window.matchMedia("(max-width: 1023px)").matches;
+    if (reduced || touch || small) return;
 
     const lenis = new Lenis({
       duration: 1.15,

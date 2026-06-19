@@ -8,7 +8,10 @@ import { motion } from "framer-motion";
  */
 export default function Aurora() {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+    <div
+      className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block"
+      aria-hidden
+    >
       <motion.div
         className="absolute -left-1/4 top-0 h-[60vh] w-[60vh] rounded-full bg-ember/20 blur-[120px]"
         animate={{ x: [0, 120, 0], y: [0, 60, 0], scale: [1, 1.15, 1] }}

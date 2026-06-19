@@ -14,6 +14,9 @@ export default function Particles({ density = 1 }: { density?: number }) {
     const parent = canvas?.parentElement;
     if (!canvas || !parent) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // En móvil un canvas a pantalla completa repintando en cada scroll genera
+    // jank fuerte: se desactiva en pantallas pequeñas / táctiles.
+    if (window.matchMedia("(max-width: 1023px)").matches) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;

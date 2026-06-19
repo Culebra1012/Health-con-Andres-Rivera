@@ -15,6 +15,7 @@ export default function Constellation() {
     const parent = canvas?.parentElement;
     if (!canvas || !parent) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(max-width: 1023px)").matches) return; // off en móvil
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
