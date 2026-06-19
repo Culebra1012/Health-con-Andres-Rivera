@@ -103,8 +103,11 @@ export default function BeforeAfterSlider() {
                 className="object-cover"
                 draggable={false}
               />
-              <span className="absolute right-5 top-5 rounded-full border border-gold/40 bg-noir/70 px-4 py-1.5 text-[10px] uppercase tracking-luxe text-gold-light backdrop-blur">
-                Post-protocolo · Regeneración profunda
+              <span className="absolute right-3 top-3 rounded-full border border-gold/40 bg-noir/80 px-3 py-1 text-[9px] uppercase tracking-[0.14em] text-gold-light backdrop-blur sm:right-5 sm:top-5 sm:px-4 sm:py-1.5 sm:text-[10px] sm:tracking-luxe">
+                <span className="sm:hidden">Después</span>
+                <span className="hidden sm:inline">
+                  Post-protocolo · Regeneración profunda
+                </span>
               </span>
             </div>
 
@@ -122,8 +125,11 @@ export default function BeforeAfterSlider() {
                 draggable={false}
               />
               <div className="absolute inset-0 bg-noir/20" />
-              <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-noir/70 px-4 py-1.5 text-[10px] uppercase tracking-luxe text-bone-dim backdrop-blur">
-                Estado base · Pérdida microestructural
+              <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-noir/80 px-3 py-1 text-[9px] uppercase tracking-[0.14em] text-bone-dim backdrop-blur sm:left-5 sm:top-5 sm:px-4 sm:py-1.5 sm:text-[10px] sm:tracking-luxe">
+                <span className="sm:hidden">Antes</span>
+                <span className="hidden sm:inline">
+                  Estado base · Pérdida microestructural
+                </span>
               </span>
             </div>
 
